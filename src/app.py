@@ -6,7 +6,8 @@ import plotly.graph_objects as go
 
 
 def read_file():
-    df = pd.read_excel(os.getcwd()+"\\..\\data\\data.xlsx")
+    # df = pd.read_excel(os.getcwd()+"\\..\\data\\data.xlsx")
+    df = pd.read_excel(os.getcwd()+"/../data/data.xlsx")
     return df
 
 
