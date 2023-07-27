@@ -13,8 +13,8 @@ VALID_USERNAME_PASSWORD_PAIRS = {
 }
 
 def read_file():
-    df = pd.read_excel(os.getcwd()+"\\..\\data\\data.xlsx")
-    # df = pd.read_excel(os.getcwd() + "/../data/data.xlsx")
+    # df = pd.read_excel(os.getcwd()+"\\..\\data\\data.xlsx")
+    df = pd.read_excel(os.getcwd() + "/../data/data.xlsx")
     return df
 
 
