@@ -3,11 +3,18 @@ import pandas as pd
 import plotly.express as px
 import os
 import plotly.graph_objects as go
+import dash_auth
+from flask import request
 
+username=""
+
+VALID_USERNAME_PASSWORD_PAIRS = {
+    'hello': 'world'
+}
 
 def read_file():
-    # df = pd.read_excel(os.getcwd()+"\\..\\data\\data.xlsx")
-    df = pd.read_excel(os.getcwd()+"/../data/data.xlsx")
+    df = pd.read_excel(os.getcwd()+"\\..\\data\\data.xlsx")
+    # df = pd.read_excel(os.getcwd() + "/../data/data.xlsx")
     return df
 
 
@@ -26,10 +33,18 @@ def get_data_indication(row, df, indication):
 df = read_file()
 pub_types, indications = sort_data(df)
 
-app = Dash(__name__)
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
+auth = dash_auth.BasicAuth(
+    app,
+    VALID_USERNAME_PASSWORD_PAIRS
+)
 server = app.server
 
+
 app.layout = html.Div([
+    html.H2('Welcome'+username),
     html.H4('Publication types by Indication'),
     html.Br(),
     dcc.Dropdown(
@@ -46,6 +61,9 @@ app.layout = html.Div([
     Output("graph", "figure"),
     Input("dropdown", "value"))
 def update_bar_chart(indication):
+    global username
+    username = request.authorization['username']
+    print(username)
     result_df = pd.DataFrame()
     result_df['Publication_type'] = pub_types
     result_df = result_df.apply(lambda row: get_data_indication(row, df, indication), axis=1)
@@ -55,4 +73,4 @@ def update_bar_chart(indication):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=8091)
